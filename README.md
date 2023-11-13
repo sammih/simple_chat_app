@@ -20,7 +20,6 @@ After you have installed PHP and Composer, you may create a new Laravel project 
 Laravel Jetstream is a beautifully designed application starter kit for Laravel and provides the perfect starting point for your next Laravel application. Jetstream provides the implementation for your application's login, registration, email verification, two-factor authentication, session management, API via <u>**[Laravel Sanctum](https://github.com/laravel/sanctum)**</u>, and optional team management features.
 
 > - `composer require laravel/jetstream`
-> - `cd chat-app`
 
 
 ## Install Jetstream With Inertia Stack and Pest PHP
