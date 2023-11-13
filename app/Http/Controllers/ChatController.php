@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreChatRequest;
 use App\Models\Chat;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
 use Inertia\Inertia;
@@ -33,14 +35,13 @@ class ChatController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreChatRequest $request) : RedirectResponse
     {
         // Create a new chat message for the authenticated user
-        auth()->user()->chats()->create(
-            $request->validate([
-                'message' => 'required|string'
-            ])
-        );
+
+        auth()->user()->chats()->create($request->safe()->only(['message']));
+
+        return  redirect(route('chats.index'));
     }
 
     /**
