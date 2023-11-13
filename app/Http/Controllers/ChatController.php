@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreChatRequest;
+use App\Http\Requests\UpdateChatRequest;
 use App\Models\Chat;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class ChatController extends Controller
     {
         // Retrieve the latest chat messages with associated users
         return Inertia::render('Chats/Index', [
-            'chats' => Chat::with('user')
+            'chats' => Chat::with('user:id,name')
             ->latest() // Order by the latest messages
             ->get() // Fetch the results
         ]);
@@ -63,9 +64,16 @@ class ChatController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Chat $chat)
+    public function update(UpdateChatRequest $request, Chat $chat)
     {
-        //
+        if ($chat->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+        // Create a new chat message for the authenticated user
+
+        $chat->update($request->safe()->only(['message']));
+
+        return  redirect(route('chats.index'));
     }
 
     /**

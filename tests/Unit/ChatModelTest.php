@@ -14,7 +14,7 @@ test('chat belongs to a user', function () {
 
     // Assert
     expect($author)->toBeInstanceOf(User::class);
-    
+
     expect(($user->id))->toBe($author->id);
 
 });
@@ -30,5 +30,5 @@ test('user can have many chats', function () {
 
     // Assert
     expect($authorChats)->toHaveCount(4);
-    
-})->only();
+
+});

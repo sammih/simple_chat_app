@@ -35,5 +35,5 @@ Route::middleware([
     })->name('dashboard');
 
     Route::resource('chats', ChatController::class)
-        ->only(['index', 'store']);
+        ->only(['index', 'store', 'update']);
 });
