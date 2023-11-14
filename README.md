@@ -32,3 +32,11 @@ Laravel Jetstream is a beautifully designed application starter kit for Laravel 
 > - `npm run build`
 > - `php artisan migrate`
 
+## Getting Started
+Run the following command to set up the database and generate two users, each owning a chat:
+> - `php artisan migrate --seed`
+
+Start the development server:
+> - `npm run dev`
+
+Visit http://chat-app.test/ and log in as one of the generated users to start chatting.

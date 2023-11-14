@@ -4,9 +4,12 @@ use App\Models\Chat;
 use App\Models\User;
 
 test('chat can be created by posting to a route', function () {
-    $this->actingAs(User::factory()->create());
 
-    $input = Chat::factory()->make();
+    $user = User::factory()->create();
+
+    $this->actingAs($user);
+
+    $input = Chat::factory()->make(['user_id' => $user->id]);
 
     $this->post(route('chats.store'), $input->toArray());
 
