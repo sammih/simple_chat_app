@@ -33,10 +33,28 @@ test('chat can be updated by posting to a route', function () {
 
     $updatedInput = Chat::factory()->make(['message' => 'updated test message']);
 
-    $this->put(route('chats.update', $originalInput->id), $updatedInput->toArray());
+    $this->put(route('chats.update', $originalInput), $updatedInput->toArray());
 
     $this->assertDatabaseHas('chats', [
         'message' => $updatedInput->message
     ]);
 
-})->only();
+});
+
+test('chat can be deleted by posting to a route', function () {
+    $this->withoutExceptionHandling();
+
+    $user = User::factory()->create();
+
+    $this->actingAs($user); // SigningIn a user
+
+    $chat = Chat::factory()->create(['user_id' => $user->id]);
+
+    $response = $this->delete(route('chats.destroy', $chat));
+
+    $response->assertStatus(302);
+
+    $this->assertDatabaseMissing('chats', [
+        'id' => $chat->id
+    ]);
+});

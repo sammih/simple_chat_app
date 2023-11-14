@@ -64,7 +64,7 @@ class ChatController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateChatRequest $request, Chat $chat)
+    public function update(UpdateChatRequest $request, Chat $chat) : RedirectResponse
     {
         if ($chat->user_id !== auth()->id()) {
             abort(403, 'Unauthorized action.');
@@ -79,8 +79,14 @@ class ChatController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Chat $chat)
+    public function destroy(Chat $chat) : RedirectResponse
     {
-        //
+        if ($chat->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $chat->delete();
+
+        return redirect(route('chats.index'));
     }
 }
