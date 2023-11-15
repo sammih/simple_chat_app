@@ -21,7 +21,7 @@ class ChatPolicy
      */
     public function view(User $user, Chat $chat): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +29,8 @@ class ChatPolicy
      */
     public function create(User $user): bool
     {
-        //
+        // Allow all users to create chats
+        return true;
     }
 
     /**
@@ -37,7 +38,8 @@ class ChatPolicy
      */
     public function update(User $user, Chat $chat): bool
     {
-        //
+        // Allow users to update their own chats
+        return $user->id === $chat->user_id;
     }
 
     /**
@@ -45,7 +47,8 @@ class ChatPolicy
      */
     public function delete(User $user, Chat $chat): bool
     {
-        //
+        // Allow users to delete their own chats
+        return $user->id === $chat->user_id;
     }
 
     /**

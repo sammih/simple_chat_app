@@ -2,6 +2,7 @@
 
 use App\Models\Chat;
 use App\Models\User;
+use App\Policies\ChatPolicy;
 
 test('chat can be created by posting to a route', function () {
 
@@ -18,6 +19,35 @@ test('chat can be created by posting to a route', function () {
     $this->assertDatabaseHas('chats', [
         'message' => $input->message
     ]);
+});
+
+test('user can update own chat', function () {
+    $user = User::factory()->create();
+    $chat = Chat::factory()->create(['user_id' => $user->id]);
+
+    $chatPolicy = new ChatPolicy();
+
+    expect($chatPolicy->update($user, $chat))->toBeTrue();
+});
+
+test('user cannot update other users chat', function () {
+    $user1 = User::factory()->create();
+    $user2 = User::factory()->create();
+
+    $chat = Chat::factory()->create(['user_id' => $user1->id]);
+
+    $chatPolicy = new ChatPolicy();
+
+    expect($chatPolicy->update($user2, $chat))->toBeFalse();
+})->only();
+
+test('user can delete own chat', function () {
+    $user = User::factory()->create();
+    $chat = Chat::factory()->create(['user_id' => $user->id]);
+
+    $chatPolicy = new ChatPolicy();
+
+    expect($chatPolicy->delete($user, $chat))->toBeTrue();
 });
 
 test('chat can be updated by posting to a route', function () {
@@ -45,7 +75,6 @@ test('chat can be updated by posting to a route', function () {
 });
 
 test('chat can be deleted by posting to a route', function () {
-    $this->withoutExceptionHandling();
 
     $user = User::factory()->create();
 

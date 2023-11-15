@@ -66,6 +66,8 @@ class ChatController extends Controller
      */
     public function update(UpdateChatRequest $request, Chat $chat) : RedirectResponse
     {
+        $this->authorize('update', $chat);
+
         if ($chat->user_id !== auth()->id()) {
             abort(403, 'Unauthorized action.');
         }
@@ -81,6 +83,8 @@ class ChatController extends Controller
      */
     public function destroy(Chat $chat) : RedirectResponse
     {
+        $this->authorize('delete', $chat);
+
         if ($chat->user_id !== auth()->id()) {
             abort(403, 'Unauthorized action.');
         }
