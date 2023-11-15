@@ -39,7 +39,6 @@ class ChatController extends Controller
     public function store(StoreChatRequest $request) : RedirectResponse
     {
         // Create a new chat message for the authenticated user
-
         auth()->user()->chats()->create($request->safe()->only(['message']));
 
         return  redirect(route('chats.index'));
@@ -68,11 +67,6 @@ class ChatController extends Controller
     {
         $this->authorize('update', $chat);
 
-        if ($chat->user_id !== auth()->id()) {
-            abort(403, 'Unauthorized action.');
-        }
-        // Create a new chat message for the authenticated user
-
         $chat->update($request->safe()->only(['message']));
 
         return  redirect(route('chats.index'));
@@ -84,10 +78,6 @@ class ChatController extends Controller
     public function destroy(Chat $chat) : RedirectResponse
     {
         $this->authorize('delete', $chat);
-
-        if ($chat->user_id !== auth()->id()) {
-            abort(403, 'Unauthorized action.');
-        }
 
         $chat->delete();
 
